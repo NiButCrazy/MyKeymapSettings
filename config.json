@@ -1295,7 +1295,16 @@
           {
             "windowGroupID": 0,
             "actionTypeID": 8,
+            "comment": "显示桌面",
             "ahkCode": "showDock()"
+          }
+        ],
+        "*4": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 3,
+            "comment": "label:1",
+            "actionValueID": 1
           }
         ],
         "*MButton": [
@@ -1368,6 +1377,7 @@
           {
             "windowGroupID": 0,
             "actionTypeID": 8,
+            "comment": "投影",
             "ahkCode": "win_p()"
           }
         ],
@@ -1382,9 +1392,9 @@
         "*r": [
           {
             "windowGroupID": 0,
-            "actionTypeID": 3,
-            "comment": "label:3",
-            "actionValueID": 3
+            "actionTypeID": 1,
+            "comment": "打开运行",
+            "target": "shortcuts\\运行.lnk"
           }
         ],
         "*s": [
@@ -1406,9 +1416,9 @@
         "*t": [
           {
             "windowGroupID": 0,
-            "actionTypeID": 3,
-            "comment": "label:14",
-            "actionValueID": 12
+            "actionTypeID": 8,
+            "comment": "窗口顶置",
+            "ahkCode": "Win_T()"
           }
         ],
         "*tab": [
@@ -1422,9 +1432,9 @@
         "*v": [
           {
             "windowGroupID": 0,
-            "actionTypeID": 9,
-            "comment": "label:75",
-            "actionValueID": 5
+            "actionTypeID": 8,
+            "comment": "表情符号",
+            "ahkCode": "send(\"#.\")"
           }
         ],
         "*w": [
@@ -1439,6 +1449,7 @@
           {
             "windowGroupID": 0,
             "actionTypeID": 8,
+            "comment": "F5",
             "ahkCode": "refresh()"
           }
         ],
@@ -1464,6 +1475,7 @@
           {
             "windowGroupID": 0,
             "actionTypeID": 6,
+            "comment": ",",
             "keysToSend": ","
           }
         ],
@@ -1471,29 +1483,32 @@
           {
             "windowGroupID": 0,
             "actionTypeID": 6,
+            "comment": ".",
             "keysToSend": "."
           }
         ],
         "*3": [
           {
             "windowGroupID": 0,
-            "actionTypeID": 5,
-            "comment": "重映射为 [",
-            "remapToKey": "["
+            "actionTypeID": 6,
+            "comment": "输入两个空格，光标移至中央",
+            "keysToSend": "  {left}"
           }
         ],
         "*4": [
           {
             "windowGroupID": 0,
             "actionTypeID": 6,
-            "keysToSend": "]"
+            "comment": "输入{  }，光标移至中央",
+            "keysToSend": "{{}  {}}{left 2}"
           }
         ],
         "*5": [
           {
             "windowGroupID": 0,
             "actionTypeID": 6,
-            "keysToSend": "{text}="
+            "comment": "输入(  )，光标移至中央",
+            "keysToSend": "{(}  {)}{left 2}"
           }
         ],
         "*LAlt": [
@@ -1544,17 +1559,11 @@
             "actionValueID": 26
           }
         ],
-        "*f": [
-          {
-            "windowGroupID": 0,
-            "actionTypeID": 8,
-            "ahkCode": "send(\"!{enter}\")"
-          }
-        ],
         "*f1": [
           {
             "windowGroupID": 0,
             "actionTypeID": 6,
+            "comment": "(",
             "keysToSend": "{text}("
           }
         ],
@@ -1562,7 +1571,16 @@
           {
             "windowGroupID": 0,
             "actionTypeID": 6,
-            "keysToSend": "{text})"
+            "comment": "{",
+            "keysToSend": "{text}{"
+          }
+        ],
+        "*h": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 7,
+            "comment": "label:42",
+            "actionValueID": 5
           }
         ],
         "*i": [
@@ -1587,6 +1605,14 @@
             "actionTypeID": 7,
             "comment": "label:45",
             "actionValueID": 8
+          }
+        ],
+        "*l": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 7,
+            "comment": "label:43",
+            "actionValueID": 6
           }
         ],
         "*q": [
@@ -1633,8 +1659,8 @@
           {
             "windowGroupID": 0,
             "actionTypeID": 7,
-            "comment": "label:42",
-            "actionValueID": 5
+            "comment": "label:50",
+            "actionValueID": 13
           }
         ],
         "*v": [
@@ -1716,7 +1742,7 @@
           {
             "windowGroupID": 0,
             "actionTypeID": 8,
-            "comment": "开关截图快捷键",
+            "comment": "切换截图快捷键开关",
             "ahkCode": "pix_pin_toggle()"
           }
         ],
@@ -1726,6 +1752,14 @@
             "actionTypeID": 7,
             "comment": "label:56",
             "actionValueID": 18
+          }
+        ],
+        "F1": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 8,
+            "comment": "查找单词",
+            "ahkCode": "search_dict()"
           }
         ]
       }
@@ -2205,7 +2239,7 @@
       {
         "id": -1,
         "name": "🚫 Exclude",
-        "value": "Stardew Valley ahk_class SDL_app\nahk_exe Rune Factory 3 Special.exe"
+        "value": "Stardew Valley ahk_class SDL_app\nahk_exe Rune Factory 3 Special.exe\nahk_exe javaw.exe"
       },
       {
         "id": 0,

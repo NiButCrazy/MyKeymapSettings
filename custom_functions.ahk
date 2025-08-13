@@ -4,75 +4,150 @@
 ; #Include ../data/test.ahk
 
 sendSomeChinese() {
-  Send("{text}你好中文!")
+	Send("{text}你好中文!")
 }
 
 alt_tab_id := 'Alt-Tab Terminator - [Guid("DD574C71-05FD-43AA-8503-2D81B87437AE")]'
 altTab() {
-  Send("{LWin down}{\}{LWin up}")
-  if (not WinExist(alt_tab_id)) {
-    SetTimer(__altTab, -100)
-  }
+	Send("{LWin down}{\}{LWin up}")
+	if ( not WinExist(alt_tab_id)) {
+		SetTimer () => __altTab(), -100
+	}
 }
 
 __altTab() {
-    WinActivate(alt_tab_id)
+	if (WinExist(alt_tab_id)) {
+		WinActivate(alt_tab_id)
+	}
 }
 ; 显示桌面
 showDock() {
-  Send("#d")
+	Send("#d")
 }
 
 winTab() {
-  Send("{LWin down}{Tab}{LWin up}")
+	Send("{LWin down}{Tab}{LWin up}")
 }
 
 
 WindowTitle := 'Bluetooth Audio Receiver'
 hideWindow() {
-   hWnd := WinExist(WindowTitle)
-    if !hWnd {
-        MsgBox "未找到窗口！"
-        return
-    }
-    ; 隐藏窗口
-    WinHide "ahk_id " hWnd
-    ; 修改窗口样式，移除任务栏图标
-    WinSetStyle("-0x80000", "ahk_id " hWnd)  ; 移除 WS_EX_APPWINDOW 样式
-    ; 显示窗口
-    WinShow "ahk_id " hWnd
+	hWnd := WinExist(WindowTitle)
+	if !hWnd {
+		MsgBox "未找到窗口！"
+		return
+	}
+	; 隐藏窗口
+	WinHide "ahk_id " hWnd
+	; 修改窗口样式，移除任务栏图标
+	WinSetStyle("-0x80000", "ahk_id " hWnd)  ; 移除 WS_EX_APPWINDOW 样式
+	; 显示窗口
+	WinShow "ahk_id " hWnd
 }
 
 ; shift + 刷新
 refresh() {
-  Send("{F5}")
+	Send("{F5}")
 }
 
-win_p(){
-  Send("#p")
-  SetTimer(__win_p, -8000)
+win_p() {
+	Send("#p")
+	SetTimer(__win_p, -8000)
 }
 
 __win_p() {
-  Run 'C:\Program Files\WindowsApps\28017CharlesMilette.TranslucentTB_2024.3.0.0_x64__v826wp6bftszj\TranslucentTB.exe'
+	Run 'E:\各种各样的安装包\软件合集\按键映射\shortcuts\TranslucentTB.lnk'
 }
 
 
 toast() {
-  TrayTip('你好中文', 'Hello World')
+	TrayTip('你好中文', 'Hello World')
 }
+
+pixpin_cmd := (
+	"E:\PixPin\PixPin.exe "
+	"-r "
+	"state=pixpin.isDisableShortcuts();"
+	"if (state) {"
+		"pixpin.disableShortcuts(!state);"
+		"pixpin.runSystem('ahk-toast.exe open')"
+	"}else {"
+		"pixpin.disableShortcuts(!state);"
+		"pixpin.runSystem('ahk-toast.exe close')"
+	"}"
+)
+
 
 pix_pin_toggle() {
-  TrayTip('已切换', '截图快捷键开关' )
-  Send('+!/')
-  SetTimer () => TrayTip(), -2000
+	Run pixpin_cmd
 }
 
-# 防止手贱长按导致鬼畜
-+!0::{
-  ; 调用函数
-    Send('+!0')
-    ; 等待按键松开
-    KeyWait("0")
-    return
+
+; 调出Quiker防止手贱长按导致鬼畜
++!0:: {
+	; 调用函数
+	Send('+!0')
+	; 等待按键松开
+	KeyWait("0")
+	return
+}
+
+eudic_state := '已关闭划词翻译'
+; 显示开启或关闭欧陆词典
+!F1:: {
+	global eudic_state
+	if (eudic_state == '已开启划词翻译') {
+		eudic_state := '已关闭划词翻译'
+	} else {
+		eudic_state := '已开启划词翻译'
+	}
+	ToolTip (eudic_state)
+	SetTimer () => ToolTip(), -2000
+	Send("!{F1}")
+	KeyWait("F1")
+	return
+}
+
+Win_T() {
+	value := !(WinGetExStyle("A") & 0x8)
+	Run 'quicker:runaction:a180d729-d9a1-4aae-a267-64b4fb6aa789?keyboard'
+	if value {
+		SetTimer () => ToolTip("窗口已顶置"), -400
+		SetTimer () => ToolTip(), -1500
+	} else {
+		ToolTip("已取消置顶")
+		SetTimer () => ToolTip(), -1500
+	}
+}
+; F1查找单词,映射ctrl+F12
+; F1:: {
+; 	Send("{Ctrl Down}")
+; 	Send("{F12}")
+; 	Sleep 50
+; 	Send("{Ctrl Up}")
+; 	KeyWait("F1")
+; 	return
+; }
+exclude_list := Map(
+	"webstorm64.exe", true,
+	"javaw.exe", true
+	)
+search_dict() {
+	current_window:= WinGetProcessName("A")
+
+    ; 检查是否包含 "WebStorm" 字样
+    if (exclude_list.Has(current_window)) {
+        ; WebStorm 在前台，不执行函数
+		Send("{F1}")
+
+    } else {
+        ; WebStorm 不在前台，执行函数
+		Send("{Ctrl Down}")
+		Send("{F12}")
+		Sleep 100
+		Send("{Ctrl Up}")
+		KeyWait("F1")
+    }
+	
+	return
 }
