@@ -52,12 +52,39 @@ refresh() {
 
 win_p() {
 	Send("#p")
-	SetTimer(__win_p, -8000)
+	; SetTimer(__win_p, -8000)
 }
 
 __win_p() {
 	Run 'E:\各种各样的安装包\软件合集\按键映射\shortcuts\TranslucentTB.lnk'
 }
+
+exclude_list_2 := Map(
+	"javaw.exe", true
+	)
+
+
+win_e() {
+	current_window:= WinGetProcessName("A")
+    if (exclude_list_2.Has(current_window)) {
+		Send("!e")
+    } else {
+		Send("^#z")
+		KeyWait("e")
+    }
+}
+
+shift_alt_e() {
+	current_window:= WinGetProcessName("A")
+    if (exclude_list_2.Has(current_window)) {
+		Send("+!e")
+
+    } else {
+		Send("^#x")
+		KeyWait("e")
+    }
+}
+
 
 
 toast() {
@@ -150,4 +177,12 @@ search_dict() {
     }
 	
 	return
+}
+
+toggle_touch_mouse() {
+	Send '{LWin Down}{LCtrl Down}{F24}{LCtrl Up}{LWin Up}'
+}
+
+openWitchVSCode() {
+	Run("quicker:runaction:7cd83361-7d44-4de9-a7f9-bee09b37c4af")
 }

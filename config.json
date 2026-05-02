@@ -1272,6 +1272,7 @@
           {
             "windowGroupID": 0,
             "actionTypeID": 8,
+            "comment": "表情符号",
             "ahkCode": "send(\"#.\")"
           }
         ],
@@ -1291,22 +1292,6 @@
             "actionValueID": 6
           }
         ],
-        "*3": [
-          {
-            "windowGroupID": 0,
-            "actionTypeID": 8,
-            "comment": "显示桌面",
-            "ahkCode": "showDock()"
-          }
-        ],
-        "*4": [
-          {
-            "windowGroupID": 0,
-            "actionTypeID": 3,
-            "comment": "label:1",
-            "actionValueID": 1
-          }
-        ],
         "*MButton": [
           {
             "windowGroupID": 0,
@@ -1323,14 +1308,6 @@
             "actionValueID": 7
           }
         ],
-        "*c": [
-          {
-            "windowGroupID": 0,
-            "actionTypeID": 7,
-            "comment": "label:56",
-            "actionValueID": 18
-          }
-        ],
         "*d": [
           {
             "windowGroupID": 0,
@@ -1339,21 +1316,28 @@
             "actionValueID": 8
           }
         ],
+        "*down": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 3,
+            "comment": "label:10",
+            "actionValueID": 8
+          }
+        ],
         "*e": [
           {
             "windowGroupID": 0,
             "actionTypeID": 1,
-            "comment": "连接手机蓝牙音频",
-            "winTitle": "ahk_exe ApplicationFrameHost.exe",
-            "target": "C:\\Program Files\\WindowsApps\\55746MarkSmirnov.BluetoothAudioReveicer_1.1.5.0_x64__xwrbx6997tsfc\\Bluetooth Audio Reveicer.exe"
+            "winTitle": "ahk_class ApplicationFrameWindow",
+            "target": "shortcuts\\Bluetooth Audio Receiver.lnk"
           }
         ],
         "*esc": [
           {
             "windowGroupID": 0,
             "actionTypeID": 3,
-            "comment": "label:1",
-            "actionValueID": 1
+            "comment": "label:8",
+            "actionValueID": 15
           }
         ],
         "*f": [
@@ -1364,13 +1348,60 @@
             "actionValueID": 10
           }
         ],
+        "*f1": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 5,
+            "comment": "重映射为 Volume_Down",
+            "remapToKey": "Volume_Down"
+          }
+        ],
+        "*f2": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 5,
+            "comment": "重映射为 Volume_Up",
+            "remapToKey": "Volume_Up"
+          }
+        ],
+        "*f3": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 5,
+            "comment": "重映射为 Media_Prev",
+            "remapToKey": "Media_Prev"
+          }
+        ],
+        "*f4": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 5,
+            "comment": "重映射为 Media_Next",
+            "remapToKey": "Media_Next"
+          }
+        ],
+        "*f5": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 8,
+            "comment": "开关触控板",
+            "ahkCode": "toggle_touch_mouse()"
+          }
+        ],
         "*g": [
           {
             "windowGroupID": 0,
-            "actionTypeID": 1,
-            "comment": "用 VS Code 打开选中的文件，在新窗口中打开",
-            "target": "shortcuts\\Visual Studio Code.lnk",
-            "args": "-n \"{selected}\""
+            "actionTypeID": 8,
+            "comment": "用VSCode打开",
+            "ahkCode": "openWitchVSCode()"
+          }
+        ],
+        "*m": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 8,
+            "comment": "显示桌面",
+            "ahkCode": "showDock()"
           }
         ],
         "*p": [
@@ -1408,9 +1439,9 @@
         "*space": [
           {
             "windowGroupID": 0,
-            "actionTypeID": 7,
-            "comment": "label:64",
-            "actionValueID": 22
+            "actionTypeID": 5,
+            "comment": "重映射为 Media_Play_Pause",
+            "remapToKey": "Media_Play_Pause"
           }
         ],
         "*t": [
@@ -1429,12 +1460,20 @@
             "ahkCode": "winTab()"
           }
         ],
+        "*up": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 3,
+            "comment": "label:11",
+            "actionValueID": 9
+          }
+        ],
         "*v": [
           {
             "windowGroupID": 0,
             "actionTypeID": 8,
-            "comment": "表情符号",
-            "ahkCode": "send(\"#.\")"
+            "comment": "音量合成器",
+            "ahkCode": "send(\"^#v\")"
           }
         ],
         "*w": [
@@ -1443,14 +1482,6 @@
             "actionTypeID": 4,
             "comment": "label:29",
             "actionValueID": 5
-          }
-        ],
-        "*z": [
-          {
-            "windowGroupID": 0,
-            "actionTypeID": 8,
-            "comment": "F5",
-            "ahkCode": "refresh()"
           }
         ],
         "singlePress": [
@@ -1663,14 +1694,6 @@
             "actionValueID": 13
           }
         ],
-        "*v": [
-          {
-            "windowGroupID": 0,
-            "actionTypeID": 9,
-            "comment": "label:75",
-            "actionValueID": 5
-          }
-        ],
         "*w": [
           {
             "windowGroupID": 0,
@@ -1698,6 +1721,94 @@
       }
     },
     {
+      "id": 20,
+      "name": "`数字键",
+      "enable": false,
+      "hotkey": "*`",
+      "parentID": 0,
+      "delay": 0,
+      "disableAt": "",
+      "hotkeys": {
+        "*a": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 5,
+            "comment": "重映射为 7",
+            "remapToKey": "7"
+          }
+        ],
+        "*c": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 6,
+            "keysToSend": "{text}-"
+          }
+        ],
+        "*d": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 5,
+            "comment": "重映射为 9",
+            "remapToKey": "9"
+          }
+        ],
+        "*e": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 5,
+            "comment": "重映射为 6",
+            "remapToKey": "6"
+          }
+        ],
+        "*q": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 5,
+            "comment": "重映射为 4",
+            "remapToKey": "4"
+          }
+        ],
+        "*s": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 5,
+            "comment": "重映射为 8",
+            "remapToKey": "8"
+          }
+        ],
+        "*w": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 5,
+            "comment": "重映射为 5",
+            "remapToKey": "5"
+          }
+        ],
+        "*x": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 6,
+            "keysToSend": "{text}+"
+          }
+        ],
+        "*z": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 5,
+            "comment": "重映射为 0",
+            "remapToKey": "0"
+          }
+        ],
+        "singlePress": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 6,
+            "keysToSend": "{bind}{`}"
+          }
+        ]
+      }
+    },
+    {
       "id": 1,
       "name": "Custom Hotkeys",
       "enable": true,
@@ -1712,6 +1823,14 @@
             "actionTypeID": 9,
             "comment": "label:71",
             "actionValueID": 1
+          }
+        ],
+        "!+e": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 8,
+            "comment": "剪切板文件中转站",
+            "ahkCode": "shift_alt_e()"
           }
         ],
         "!F11": [
@@ -1738,6 +1857,14 @@
             "ahkCode": "altTab()"
           }
         ],
+        "!e": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 8,
+            "comment": "文件中转站",
+            "ahkCode": "win_e()"
+          }
+        ],
         "+!/": [
           {
             "windowGroupID": 0,
@@ -1752,6 +1879,14 @@
             "actionTypeID": 7,
             "comment": "label:56",
             "actionValueID": 18
+          }
+        ],
+        "Down": [
+          {
+            "windowGroupID": 5,
+            "actionTypeID": 5,
+            "comment": "重映射为 Enter",
+            "remapToKey": "Enter"
           }
         ],
         "F1": [
@@ -2034,7 +2169,7 @@
     {
       "id": 3,
       "name": "Abbreviation",
-      "enable": true,
+      "enable": false,
       "hotkey": "semicolonAbbr",
       "parentID": 0,
       "delay": 0,
@@ -2239,7 +2374,7 @@
       {
         "id": -1,
         "name": "🚫 Exclude",
-        "value": "Stardew Valley ahk_class SDL_app\nahk_exe Rune Factory 3 Special.exe\nahk_exe javaw.exe"
+        "value": "Stardew Valley ahk_class SDL_app\nahk_exe javaw.exe"
       },
       {
         "id": 0,
@@ -2247,14 +2382,20 @@
       },
       {
         "id": 1,
-        "name": "🌐 Web Browser",
+        "name": "🌐 浏览器",
         "value": "ahk_exe chrome.exe\nahk_exe msedge.exe\nahk_exe firefox.exe",
         "conditionType": 1
       },
       {
         "id": 3,
-        "name": "📁 File Explorer",
+        "name": "📁 资源管理器",
         "value": "ahk_exe explorer.exe",
+        "conditionType": 1
+      },
+      {
+        "id": 5,
+        "name": "😏 特殊",
+        "value": "ahk_exe HENPRI.exe",
         "conditionType": 1
       }
     ],
@@ -2303,6 +2444,6 @@
     "startup": true,
     "language": "zh",
     "keyMapping": "",
-    "keyboardLayout": "esc f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12\n` 1 2 3 4 5 6 7 8 9 0 - = backspace\ntab q w e r t y u i o p [ ] \\\ncapslock a s d f g h j k l ; ' enter\nLShift z x c v b n m , . / RShift\nLCtrl LWin LAlt space RAlt RWin RCtrl singlePress\nLButton RButton MButton XButton1 XButton2 WheelUp WheelDown WheelLeft WheelRight"
+    "keyboardLayout": "esc f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12\n` 1 2 3 4 5 6 7 8 9 0 - = backspace\ntab q w e r t y u i o p [ ] \\\ncapslock a s d f g h j k l ; ' enter\nLShift z x c v b n m , . / RShift\nLCtrl LWin LAlt space RAlt RWin RCtrl singlePress\nPrintScreen ScrollLock Pause insert home pgup delete end pgdn up down left right\nnumpad0 numpad1 numpad2 numpad3 numpad4 numpad5 numpad6 numpad7 numpad8 numpad9\nNumpadDot NumpadEnter NumpadAdd NumpadSub NumpadMult NumpadDiv NumLock\nLButton RButton MButton XButton1 XButton2 WheelUp WheelDown WheelLeft WheelRight"
   }
 }
