@@ -1888,6 +1888,22 @@
             "comment": "查找单词",
             "ahkCode": "search_dict()"
           }
+        ],
+        "^+!e": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 8,
+            "comment": "管理员运行 PowerShell",
+            "ahkCode": "openWithPwsh(true)"
+          }
+        ],
+        "^+e": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 8,
+            "comment": "运行于 Power Shell",
+            "ahkCode": "openWithPwsh()"
+          }
         ]
       }
     },

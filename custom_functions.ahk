@@ -186,3 +186,57 @@ toggle_touch_mouse() {
 openWitchVSCode() {
 	Run("quicker:runaction:7cd83361-7d44-4de9-a7f9-bee09b37c4af")
 }
+
+
+; 打开PowerShell
+openWithPwsh(isAdmin:=false) {
+	if (isAdmin) {
+		Run("wt -d " . formatPath(GetExplorerPath()))
+	}else {
+		; 定义于全局函数模块
+		ShellRun("pwsh",  '-nol -noe -wd ' . formatPath(GetExplorerPath()))
+	}
+	; Run("wt" . " -d " . GetExplorerPath())
+	; Run("pwsh")
+}
+
+
+objWindows := ComObject("Shell.Application").Windows
+
+
+/**
+ * 正确处理 pwsh 所能接受的路径命令行字符串
+ * @param path
+ */
+formatPath(path:="") {
+	if (StrLen(path)<=3) {
+		return path
+	}else {
+		return '"' . RTrim(path, "\") . '"'
+	}
+}
+
+
+GetExplorerPath(hwnd:=WinExist("A")) {
+    activeTab := 0
+    try activeTab := ControlGetHwnd("ShellTabWindowClass1", hwnd)
+    for w in objWindows {
+        if (w.hwnd != hwnd)
+            continue
+        if activeTab {
+            static IID_IShellBrowser := "{000214E2-0000-0000-C000-000000000046}"
+            shellBrowser := ComObjQuery(w, IID_IShellBrowser, IID_IShellBrowser)
+            ComCall(3, shellBrowser, "uint*", &thisTab:=0)
+            if (thisTab != activeTab)
+                continue
+        }
+        for item in w.Document.SelectedItems {
+            if item.IsFolder {
+                return item.Path
+            }
+        }
+				
+				return w.Document.Folder.Self.Path
+    }
+    return '~'
+}
