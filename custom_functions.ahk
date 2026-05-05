@@ -217,7 +217,13 @@ formatPath(path:="") {
 }
 
 
+;  桌面句柄
+desktopHwnd := WinExist("ahk_class Progman")
+
 GetExplorerPath(hwnd:=WinExist("A")) {
+		if (hwnd == desktopHwnd) {
+			return '~/desktop'
+		}
     activeTab := 0
     try activeTab := ControlGetHwnd("ShellTabWindowClass1", hwnd)
     for w in objWindows {
