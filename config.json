@@ -1881,14 +1881,6 @@
             "actionValueID": 18
           }
         ],
-        "Down": [
-          {
-            "windowGroupID": 5,
-            "actionTypeID": 5,
-            "comment": "重映射为 Enter",
-            "remapToKey": "Enter"
-          }
-        ],
         "F1": [
           {
             "windowGroupID": 0,
@@ -2390,12 +2382,6 @@
         "id": 3,
         "name": "📁 资源管理器",
         "value": "ahk_exe explorer.exe",
-        "conditionType": 1
-      },
-      {
-        "id": 5,
-        "name": "😏 特殊",
-        "value": "ahk_exe HENPRI.exe",
         "conditionType": 1
       }
     ],
