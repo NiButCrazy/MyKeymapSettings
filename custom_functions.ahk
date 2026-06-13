@@ -61,30 +61,29 @@ __win_p() {
 
 exclude_list_2 := Map(
 	"javaw.exe", true
-	)
+)
 
 
 win_e() {
-	current_window:= WinGetProcessName("A")
-    if (exclude_list_2.Has(current_window)) {
+	current_window := WinGetProcessName("A")
+	if (exclude_list_2.Has(current_window)) {
 		Send("!e")
-    } else {
+	} else {
 		Send("^#z")
 		KeyWait("e")
-    }
+	}
 }
 
 shift_alt_e() {
-	current_window:= WinGetProcessName("A")
-    if (exclude_list_2.Has(current_window)) {
+	current_window := WinGetProcessName("A")
+	if (exclude_list_2.Has(current_window)) {
 		Send("+!e")
 
-    } else {
+	} else {
 		Send("^#x")
 		KeyWait("e")
-    }
+	}
 }
-
 
 
 toast() {
@@ -96,11 +95,11 @@ pixpin_cmd := (
 	"-r "
 	"state=pixpin.isDisableShortcuts();"
 	"if (state) {"
-		"pixpin.disableShortcuts(!state);"
-		"pixpin.runSystem('ahk-toast.exe open')"
+	"pixpin.disableShortcuts(!state);"
+	"pixpin.runSystem('ahk-toast.exe open')"
 	"}else {"
-		"pixpin.disableShortcuts(!state);"
-		"pixpin.runSystem('ahk-toast.exe close')"
+	"pixpin.disableShortcuts(!state);"
+	"pixpin.runSystem('ahk-toast.exe close')"
 	"}"
 )
 
@@ -158,25 +157,26 @@ Win_T() {
 exclude_list := Map(
 	"webstorm64.exe", true,
 	"javaw.exe", true
-	)
+)
 search_dict() {
-	current_window:= WinGetProcessName("A")
+	if (WinExist("A")) {
+		current_window := WinGetProcessName("A")
 
-    ; 检查是否包含 "WebStorm" 字样
-    if (exclude_list.Has(current_window)) {
-        ; WebStorm 在前台，不执行函数
-		Send("{F1}")
+		; 检查是否包含 "WebStorm" 字样
+		if (exclude_list.Has(current_window)) {
+			; WebStorm 在前台，不执行函数
+			Send("{F1}")
 
-    } else {
-        ; WebStorm 不在前台，执行函数
-		Send("{Ctrl Down}")
-		Send("{F12}")
-		Sleep 100
-		Send("{Ctrl Up}")
-		KeyWait("F1")
-    }
-	
-	return
+		} else {
+			; WebStorm 不在前台，执行函数
+			Send("{Ctrl Down}")
+			Send("{F12}")
+			Sleep 100
+			Send("{Ctrl Up}")
+			KeyWait("F1")
+		}
+		return
+	}
 }
 
 toggle_touch_mouse() {
@@ -189,12 +189,12 @@ openWitchVSCode() {
 
 
 ; 打开PowerShell
-openWithPwsh(isAdmin:=false) {
+openWithPwsh(isAdmin := false) {
 	if (isAdmin) {
 		Run("wt -d " . formatPath(GetExplorerPath()))
-	}else {
+	} else {
 		; 定义于全局函数模块
-		ShellRun("pwsh",  '-nol -noe -wd ' . formatPath(GetExplorerPath()))
+		ShellRun("pwsh", '-nol -noe -wd ' . formatPath(GetExplorerPath()))
 	}
 	; Run("wt" . " -d " . GetExplorerPath())
 	; Run("pwsh")
@@ -208,10 +208,10 @@ objWindows := ComObject("Shell.Application").Windows
  * 正确处理 pwsh 所能接受的路径命令行字符串
  * @param path
  */
-formatPath(path:="") {
-	if (StrLen(path)<=3) {
+formatPath(path := "") {
+	if (StrLen(path) <= 3) {
 		return path
-	}else {
+	} else {
 		return '"' . RTrim(path, "\") . '"'
 	}
 }
@@ -220,29 +220,84 @@ formatPath(path:="") {
 ;  桌面句柄
 desktopHwnd := WinExist("ahk_class Progman")
 
-GetExplorerPath(hwnd:=WinExist("A")) {
-		if (hwnd == desktopHwnd) {
-			return A_Desktop
+GetExplorerPath(hwnd := WinExist("A")) {
+	if (hwnd == desktopHwnd) {
+		return A_Desktop
+	}
+	activeTab := 0
+	try activeTab := ControlGetHwnd("ShellTabWindowClass1", hwnd)
+	for w in objWindows {
+		if (w.hwnd != hwnd)
+			continue
+		if activeTab {
+			static IID_IShellBrowser := "{000214E2-0000-0000-C000-000000000046}"
+			shellBrowser := ComObjQuery(w, IID_IShellBrowser, IID_IShellBrowser)
+			ComCall(3, shellBrowser, "uint*", &thisTab := 0)
+			if (thisTab != activeTab)
+				continue
 		}
-    activeTab := 0
-    try activeTab := ControlGetHwnd("ShellTabWindowClass1", hwnd)
-    for w in objWindows {
-        if (w.hwnd != hwnd)
-            continue
-        if activeTab {
-            static IID_IShellBrowser := "{000214E2-0000-0000-C000-000000000046}"
-            shellBrowser := ComObjQuery(w, IID_IShellBrowser, IID_IShellBrowser)
-            ComCall(3, shellBrowser, "uint*", &thisTab:=0)
-            if (thisTab != activeTab)
-                continue
-        }
-        for item in w.Document.SelectedItems {
-            if item.IsFolder {
-                return item.Path
-            }
-        }
-				
-				return w.Document.Folder.Self.Path
-    }
-    return '~'
+		for item in w.Document.SelectedItems {
+			if item.IsFolder {
+				return item.Path
+			}
+		}
+
+		return w.Document.Folder.Self.Path
+	}
+	return '~'
+}
+
+
+createNullFile(filePath := "") {
+
+		; 获取当前目录
+	folderPath := GetExplorerPath()
+	if (folderPath == '~') {
+		return
+	}
+
+	; ----- 1. 获取当前文件夹对象 -----
+	shellWindows := ComObject('Shell.Application').Windows
+	hWnd := WinExist('A')
+
+	loop {
+		fileName := "新建文件" . (A_Index = 1 ? '' : ' (' . A_Index . ')')
+		filePath := folderPath . '\' . fileName
+	} until !FileExist(filePath)
+
+	; 判断是桌面还是文件夹
+	if WinGetClass(hWnd) ~= 'Progman|WorkerW' {
+		shellFolderView := shellWindows.Item(ComValue(0x13, 0x8)).Document
+		currentWindow := ''   ; 桌面没有独立窗口对象
+	} else {
+		for window in shellWindows {
+			try if hWnd = window.HWND {
+				shellFolderView := window.Document
+				currentWindow := window
+				break
+			}
+		}
+	}
+	; 创建文件
+	FileAppend('', filePath, 'UTF-8')
+	for window in shellWindows {
+		try if hWnd = window.HWND {
+			shellFolderView := window.Document
+			currentWindow := window
+			break
+		}
+	}
+
+	try {
+		if currentWindow
+			currentWindow.Refresh()    ; 刷新普通文件夹
+		else
+			shellFolderView.Refresh()   ; 刷新桌面
+	}
+
+	; 选中并重命名
+	shellFolderView.SelectItem(filePath, 3|4|8)
+	Sleep 50
+	Send '{F2}'
+	
 }

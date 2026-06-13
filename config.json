@@ -1328,8 +1328,9 @@
           {
             "windowGroupID": 0,
             "actionTypeID": 1,
-            "winTitle": "ahk_class ApplicationFrameWindow",
-            "target": "shortcuts\\Bluetooth Audio Receiver.lnk"
+            "comment": "资源管理器",
+            "winTitle": "ahk_class CabinetWClass ahk_exe explorer.exe",
+            "target": "shortcuts\\File Explorer.lnk"
           }
         ],
         "*esc": [
@@ -1865,6 +1866,15 @@
             "ahkCode": "win_e()"
           }
         ],
+        "#+e": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 1,
+            "comment": "蓝牙播放器",
+            "winTitle": "ahk_class ApplicationFrameWindow ahk_exe ApplicationFrameHost.exe",
+            "target": "shortcuts\\Bluetooth Audio Receiver.lnk"
+          }
+        ],
         "+!/": [
           {
             "windowGroupID": 0,
@@ -1903,6 +1913,14 @@
             "actionTypeID": 8,
             "comment": "运行于 Power Shell",
             "ahkCode": "openWithPwsh()"
+          }
+        ],
+        "^Q": [
+          {
+            "windowGroupID": 3,
+            "actionTypeID": 8,
+            "comment": "创建空白文件",
+            "ahkCode": "createNullFile()"
           }
         ]
       }
