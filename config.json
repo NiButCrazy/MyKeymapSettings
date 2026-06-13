@@ -1915,7 +1915,15 @@
             "ahkCode": "openWithPwsh()"
           }
         ],
-        "^Q": [
+        "^+q": [
+          {
+            "windowGroupID": 3,
+            "actionTypeID": 8,
+            "comment": "创建空白文件夹",
+            "ahkCode": "createNullFile(true)"
+          }
+        ],
+        "^q": [
           {
             "windowGroupID": 3,
             "actionTypeID": 8,

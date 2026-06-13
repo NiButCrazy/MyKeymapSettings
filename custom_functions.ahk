@@ -248,56 +248,74 @@ GetExplorerPath(hwnd := WinExist("A")) {
 }
 
 
-createNullFile(filePath := "") {
+createNullFile(isFolder := false) {
+    ; 获取当前目录
+    folderPath := GetExplorerPath()
+    if (folderPath == '~') {
+        return
+    }
 
-		; 获取当前目录
-	folderPath := GetExplorerPath()
-	if (folderPath == '~') {
-		return
-	}
+    ; ----- 1. 获取当前文件夹对象 -----
+    shellWindows := ComObject('Shell.Application').Windows
+    hWnd := WinExist('A')
 
-	; ----- 1. 获取当前文件夹对象 -----
-	shellWindows := ComObject('Shell.Application').Windows
-	hWnd := WinExist('A')
+    ; 根据类型确定基础名称
+    baseName := isFolder ? "新建文件夹" : "新建文件"
+    
+    ; 处理重名
+    loop {
+        fileName := baseName . (A_Index = 1 ? '' : ' (' . A_Index . ')')
+        filePath := folderPath . '\' . fileName
+    } until !FileExist(filePath)
 
-	loop {
-		fileName := "新建文件" . (A_Index = 1 ? '' : ' (' . A_Index . ')')
-		filePath := folderPath . '\' . fileName
-	} until !FileExist(filePath)
+    ; 判断是桌面还是文件夹
+    if WinGetClass(hWnd) ~= 'Progman|WorkerW' {
+        shellFolderView := shellWindows.Item(ComValue(0x13, 0x8)).Document
+        currentWindow := ''   ; 桌面没有独立窗口对象
+    } else {
+        for window in shellWindows {
+            try if hWnd = window.HWND {
+                shellFolderView := window.Document
+                currentWindow := window
+                break
+            }
+        }
+    }
 
-	; 判断是桌面还是文件夹
-	if WinGetClass(hWnd) ~= 'Progman|WorkerW' {
-		shellFolderView := shellWindows.Item(ComValue(0x13, 0x8)).Document
-		currentWindow := ''   ; 桌面没有独立窗口对象
-	} else {
-		for window in shellWindows {
-			try if hWnd = window.HWND {
-				shellFolderView := window.Document
-				currentWindow := window
-				break
-			}
-		}
-	}
-	; 创建文件
-	FileAppend('', filePath, 'UTF-8')
-	for window in shellWindows {
-		try if hWnd = window.HWND {
-			shellFolderView := window.Document
-			currentWindow := window
-			break
-		}
-	}
+    ; ----- 2. 创建文件或文件夹 -----
+    if isFolder {
+        ; 创建文件夹
+        DirCreate(filePath)
+    } else {
+        ; 创建空文件
+        FileAppend('', filePath, 'UTF-8')
+    }
 
-	try {
-		if currentWindow
-			currentWindow.Refresh()    ; 刷新普通文件夹
-		else
-			shellFolderView.Refresh()   ; 刷新桌面
-	}
+    ; 再次获取当前窗口（确保刷新前对象有效）
+    for window in shellWindows {
+        try if hWnd = window.HWND {
+            shellFolderView := window.Document
+            currentWindow := window
+            break
+        }
+    }
 
-	; 选中并重命名
-	shellFolderView.SelectItem(filePath, 3|4|8)
-	Sleep 50
-	Send '{F2}'
-	
+    ; ----- 3. 刷新视图 -----
+    try {
+        if currentWindow
+            currentWindow.Refresh()    ; 刷新普通文件夹
+        else
+            shellFolderView.Refresh()   ; 刷新桌面
+    }
+
+    ; 等待刷新完成
+    Sleep 100
+
+    ; ----- 4. 选中并重命名 -----
+    ; 刷新后需要重新获取文件/文件夹对象
+    try {
+        shellFolderView.SelectItem(filePath, 3|4|8)
+        Sleep 50
+        Send '{F2}'
+    }
 }
