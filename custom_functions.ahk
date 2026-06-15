@@ -282,6 +282,7 @@ GetExplorerPathX(hwnd := WinExist("A")) {
 }
 
 ; 创建空文件或文件夹, 及时刷新视图后, 选中并进入重命名模式
+; (选中已存在文件夹时, 默认进入重命名模式)
 createNullFile(isFolder := false) {
 	; 获取当前目录
 	PathX := GetExplorerPathX()
@@ -294,7 +295,7 @@ createNullFile(isFolder := false) {
 	}
 
 	; ----- 1. 获取当前文件夹对象 -----
-	shellWindows := ComObject('Shell.Application').Windows
+	; shellWindows := ComObject('Shell.Application').Windows
 	hWnd := WinExist('A')
 
 	; 根据类型确定基础名称
@@ -317,14 +318,14 @@ createNullFile(isFolder := false) {
 
 	; 判断是桌面还是文件夹
 	if WinGetClass(hWnd) ~= 'Progman|WorkerW' {
-		shellFolderView := shellWindows.Item(ComValue(0x13, 0x8)).Document
+		shellFolderView := objWindows.Item(ComValue(0x13, 0x8)).Document
 		currentWindow := ''   ; 桌面没有独立窗口对象
 	} else {
 		; 获取当前活动标签页的底层句柄
 		activeTab := 0
 		try activeTab := ControlGetHwnd("ShellTabWindowClass1", hWnd)
 		
-		for w in shellWindows {
+		for w in objWindows {
 			if (w.HWND != hWnd)
 				continue
 			
