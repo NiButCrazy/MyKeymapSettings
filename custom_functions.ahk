@@ -329,7 +329,7 @@ createNullFile(isFolder := false) {
 			if (w.HWND != hWnd)
 				continue
 			
-			; 如果存在多标签页，利用你提供的 IShellBrowser 底层比对法精准匹配
+			; 如果存在多标签页，利用 IShellBrowser 底层比对法精准匹配
 			if activeTab {
 				static IID_IShellBrowser := "{000214E2-0000-0000-C000-000000000046}"
 				shellBrowser := ComObjQuery(w, IID_IShellBrowser, IID_IShellBrowser)
