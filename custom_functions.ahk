@@ -201,7 +201,6 @@ openWithPwsh(isAdmin := false) {
 }
 
 
-objWindows := ComObject("Shell.Application").Windows
 
 
 /**
@@ -230,6 +229,7 @@ GetExplorerPath(hwnd := WinExist("A")) {
 	}
 	activeTab := 0
 	try activeTab := ControlGetHwnd("ShellTabWindowClass1", hwnd)
+	objWindows := ComObject("Shell.Application").Windows
 	for w in objWindows {
 		if (w.hwnd != hwnd)
 			continue
@@ -262,6 +262,7 @@ GetExplorerPathX(hwnd := WinExist("A")) {
 	}
 	activeTab := 0
 	try activeTab := ControlGetHwnd("ShellTabWindowClass1", hwnd)
+	objWindows := ComObject("Shell.Application").Windows
 	for w in objWindows {
 		if (w.hwnd != hwnd)
 			continue
@@ -315,6 +316,8 @@ createNullFile(isFolder := false) {
 		; 创建空文件
 		FileAppend('', filePath, 'UTF-8')
 	}
+	
+	objWindows := ComObject("Shell.Application").Windows
 
 	; 判断是桌面还是文件夹
 	if WinGetClass(hWnd) ~= 'Progman|WorkerW' {
