@@ -156,7 +156,8 @@ Win_T() {
 ; }
 exclude_list := Map(
 	"webstorm64.exe", true,
-	"javaw.exe", true
+	"javaw.exe", true,
+	"java.exe", true
 )
 search_dict() {
 	if (WinExist("A")) {
@@ -316,7 +317,7 @@ createNullFile(isFolder := false) {
 		; 创建空文件
 		FileAppend('', filePath, 'UTF-8')
 	}
-	
+
 	objWindows := ComObject("Shell.Application").Windows
 
 	; 判断是桌面还是文件夹

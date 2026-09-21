@@ -1300,12 +1300,28 @@
             "actionValueID": 13
           }
         ],
+        "*`": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 6,
+            "comment": "隐藏笔记/待办",
+            "keysToSend": "!{F15}"
+          }
+        ],
         "*a": [
           {
             "windowGroupID": 0,
             "actionTypeID": 4,
             "comment": "label:31",
             "actionValueID": 7
+          }
+        ],
+        "*b": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 6,
+            "comment": "新建笔记",
+            "keysToSend": "!{F13}"
           }
         ],
         "*d": [
@@ -1397,12 +1413,12 @@
             "ahkCode": "openWitchVSCode()"
           }
         ],
-        "*m": [
+        "*n": [
           {
             "windowGroupID": 0,
-            "actionTypeID": 8,
-            "comment": "显示桌面",
-            "ahkCode": "showDock()"
+            "actionTypeID": 6,
+            "comment": "新建待办",
+            "keysToSend": "!{F14}"
           }
         ],
         "*p": [
@@ -1897,6 +1913,14 @@
             "actionTypeID": 8,
             "comment": "查找单词",
             "ahkCode": "search_dict()"
+          }
+        ],
+        "^#`": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 6,
+            "comment": "打开笔记菜单",
+            "keysToSend": "!{F16}"
           }
         ],
         "^+!e": [
