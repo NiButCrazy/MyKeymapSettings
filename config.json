@@ -1501,6 +1501,14 @@
             "actionValueID": 5
           }
         ],
+        "*x": [
+          {
+            "windowGroupID": 0,
+            "actionTypeID": 8,
+            "comment": "办公套件",
+            "ahkCode": "pcSuiteSend()"
+          }
+        ],
         "singlePress": [
           {
             "windowGroupID": 0,

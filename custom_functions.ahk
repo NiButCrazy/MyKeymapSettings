@@ -368,3 +368,86 @@ createNullFile(isFolder := false) {
 		Send '{F2}'
 	}
 }
+
+
+
+
+
+; ========== 互传助手: 读取 pcsuite 右键菜单配置, 弹出设备选择菜单 ==========
+pcSuiteSend() {
+	static cfgPath := 'C:\Users\Administrator\AppData\Roaming\pcsuite\RightClickMenu\config.xml'
+	; 配置文件实时变化, 每次调用都重新读取
+	xmlText := ''
+	try xmlText := FileRead(cfgPath, 'UTF-8')
+	if (xmlText == '') {
+		MsgBox '读取配置失败: ' cfgPath
+		return
+	}
+
+	; 解析所有 item 节点
+	items := []
+	pos := 1
+	while (pos := RegExMatch(xmlText, '<item text="([^"]*)" name="([^"]*)" path="([^"]*)" arguments="([^"]*)" workpath="([^"]*)"', &m, pos)) {
+		items.Push({ text: m[1], path: m[3], args: m[4], workpath: m[5] })
+		pos += m.Len
+	}
+	if (items.Length == 0) {
+		MsgBox '配置中未找到菜单项'
+		return
+	}
+	
+	; 弹出选择菜单
+	m := Menu()
+	for item in items
+		m.Add(item.text, pcSuiteRun.Bind(item))
+	m.Show()
+}
+
+; 执行选中的菜单项
+pcSuiteRun(item, *) {
+	; arguments 已包含 --deviceid 等参数, 只需把 ${selection} 替换为 JSON 文件列表
+	; JSON 里的双引号要转义成 \", 否则经 argv 解析后软件收到的参数不带引号
+	args := item.args
+	if InStr(args, '${selection}') {
+		jsonPaths := ''
+		for p in pcSuiteGetSelectedPaths()
+			jsonPaths .= (jsonPaths == '' ? '' : ',') '\"' StrReplace(p, '\', '/') '\"'
+		args := StrReplace(args, '${selection}', '{\"path\":[' jsonPaths '],\"mode\":0}')
+	}
+
+	workDir := DirExist(item.workpath) ? item.workpath : ''
+	Run '"' item.path '" ' args, workDir
+}
+
+/**
+ * 获取资源管理器(或桌面)中选中的所有文件路径;
+ * 未选中任何文件时返回当前目录路径
+ * @returns {Array}
+ */
+pcSuiteGetSelectedPaths(hwnd := WinExist('A')) {
+	if (hwnd == desktopHwnd) {
+		return [A_Desktop]
+	}
+	activeTab := 0
+	try activeTab := ControlGetHwnd('ShellTabWindowClass1', hwnd)
+	objWindows := ComObject('Shell.Application').Windows
+	for w in objWindows {
+		if (w.hwnd != hwnd)
+			continue
+		if activeTab {
+			static IID_IShellBrowser := '{000214E2-0000-0000-C000-000000000046}'
+			shellBrowser := ComObjQuery(w, IID_IShellBrowser, IID_IShellBrowser)
+			ComCall(3, shellBrowser, 'uint*', &thisTab := 0)
+			if (thisTab != activeTab)
+				continue
+		}
+		if (w.Document.SelectedItems.Count > 0) {
+			paths := []
+			for item in w.Document.SelectedItems
+				paths.Push(item.Path)
+			return paths
+		}
+		return [w.Document.Folder.Self.Path]
+	}
+	return []
+}
