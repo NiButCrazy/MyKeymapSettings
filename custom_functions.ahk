@@ -451,3 +451,38 @@ pcSuiteGetSelectedPaths(hwnd := WinExist('A')) {
 	}
 	return []
 }
+
+
+SetMenuTheme(appMode := 0) {
+    static preferredAppMode := {Default:0, AllowDark:1, ForceDark:2, ForceLight:3, Max:4}
+    static uxtheme := DllCall("Kernel32\GetModuleHandle", "Str", "uxtheme", "Ptr")
+    static fnSetPreferredAppMode := uxtheme ? DllCall("Kernel32\GetProcAddress", "Ptr", uxtheme, "Ptr", 135, "Ptr") : 0
+    static fnFlushMenuThemes := uxtheme ? DllCall("Kernel32\GetProcAddress", "Ptr", uxtheme, "Ptr", 136, "Ptr") : 0
+    
+    if (preferredAppMode.hasProp(appMode))
+        appMode := preferredAppMode.%appMode%
+    if (fnSetPreferredAppMode && fnFlushMenuThemes)
+        DllCall(fnSetPreferredAppMode, "Int", appMode), DllCall(fnFlushMenuThemes)
+}
+
+
+IsSystemDark() {
+    try {
+        return RegRead("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme") = 0
+    } catch {
+        return false
+    }
+}
+
+; 脚本启动时，先同步一次当前系统状态
+SetMenuTheme(IsSystemDark() ? "ForceDark" : "ForceLight")
+
+; 监听系统设置变更
+OnMessage(0x1A, OnSettingChange)
+
+OnSettingChange(wParam, lParam, msg, hwnd) {
+    if (lParam && StrGet(lParam) = "ImmersiveColorSet") {
+        ; 系统主题变了，重新读取并设置菜单主题
+        SetMenuTheme(IsSystemDark() ? "ForceDark" : "ForceLight")
+    }
+}
