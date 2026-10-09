@@ -486,3 +486,8 @@ OnSettingChange(wParam, lParam, msg, hwnd) {
         SetMenuTheme(IsSystemDark() ? "ForceDark" : "ForceLight")
     }
 }
+
+
+PreviewWithBandizip() {
+	ShellRun('Bandizip', '/open -fg ' '"' GetExplorerPath() '"')
+}

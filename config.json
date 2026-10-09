@@ -1451,6 +1451,12 @@
             "actionTypeID": 4,
             "comment": "label:30",
             "actionValueID": 6
+          },
+          {
+            "windowGroupID": 3,
+            "actionTypeID": 8,
+            "comment": "办公套件",
+            "ahkCode": "pcSuiteSend()"
           }
         ],
         "*space": [
@@ -1499,14 +1505,12 @@
             "actionTypeID": 4,
             "comment": "label:29",
             "actionValueID": 5
-          }
-        ],
-        "*x": [
+          },
           {
-            "windowGroupID": 0,
+            "windowGroupID": 3,
             "actionTypeID": 8,
-            "comment": "办公套件",
-            "ahkCode": "pcSuiteSend()"
+            "comment": "使用bandizip预览压缩包",
+            "ahkCode": "PreviewWithBandizip()"
           }
         ],
         "singlePress": [
