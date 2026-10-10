@@ -221,7 +221,7 @@ formatPath(path := "") {
 desktopHwnd := WinExist("ahk_class Progman")
 
 /**
- * 获取当前目录路径, 支持多标签页面
+ * 获取当前目录路径, 支持多标签页面, 仅支持获取文件夹
  * @returns {string}
  */
 GetExplorerPath(hwnd := WinExist("A")) {
@@ -489,5 +489,5 @@ OnSettingChange(wParam, lParam, msg, hwnd) {
 
 
 PreviewWithBandizip() {
-	ShellRun('Bandizip', '/open -fg ' '"' GetExplorerPath() '"')
+	ShellRun('Bandizip', '/open -fg ' '"' GetExplorerPathX().path '"')
 }
