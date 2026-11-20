@@ -184,8 +184,40 @@ toggle_touch_mouse() {
 	Send '{LWin Down}{LCtrl Down}{F24}{LCtrl Up}{LWin Up}'
 }
 
-openWitchVSCode() {
-	Run("quicker:runaction:7cd83361-7d44-4de9-a7f9-bee09b37c4af")
+
+; VS Code 打开选中文件/文件夹, 其余情况恢复上一次工作区
+openWithVSCode() {
+	paths := GetSelectedPaths()
+	if (paths.Length = 0)
+		return ShellRun("code", "-r",,,1)
+
+	; 未选中（只有一个目录）→ 打开目录；选中 → 打开所有选中项
+	args := ""
+	if (paths.Length = 1 && DirExist(paths[1]))
+		args := '"' paths[1] '"'
+	else
+		for p in paths
+			args .= ' "' p '"'
+
+	ShellRun("code", args,,,1)
+}
+
+sublimeTextPath := "E:\Sublime Text\sublime_text.exe"
+
+openWithSublimeText() {
+	paths := GetSelectedPaths()
+	if (paths.Length = 0)
+		return
+
+	; 未选中（只有一个目录）→ 打开目录；选中 → 打开所有选中项
+	args := ""
+	if (paths.Length = 1 && DirExist(paths[1]))
+		args := '"' paths[1] '"'
+	else
+		for p in paths
+			args .= ' "' p '"'
+	; Sublime text 如果使用 ShellRun 会导致无法获取焦点
+	RunPrograms(sublimeTextPath, args)
 }
 
 
@@ -315,7 +347,7 @@ createNullFile(isFolder := false) {
 		DirCreate(filePath)
 	} else {
 		; 创建空文件
-		FileAppend('', filePath, 'UTF-8')
+		FileAppend('', filePath, "UTF-8-RAW")
 	}
 
 	objWindows := ComObject("Shell.Application").Windows
@@ -410,7 +442,7 @@ pcSuiteRun(item, *) {
 	args := item.args
 	if InStr(args, '${selection}') {
 		jsonPaths := ''
-		for p in pcSuiteGetSelectedPaths()
+		for p in GetSelectedPaths()
 			jsonPaths .= (jsonPaths == '' ? '' : ',') '\"' StrReplace(p, '\', '/') '\"'
 		args := StrReplace(args, '${selection}', '{\"path\":[' jsonPaths '],\"mode\":0}')
 	}
@@ -424,7 +456,7 @@ pcSuiteRun(item, *) {
  * 未选中任何文件时返回当前目录路径
  * @returns {Array}
  */
-pcSuiteGetSelectedPaths(hwnd := WinExist('A')) {
+GetSelectedPaths(hwnd := WinExist('A')) {
 	if (hwnd == desktopHwnd) {
 		return [A_Desktop]
 	}
@@ -489,5 +521,14 @@ OnSettingChange(wParam, lParam, msg, hwnd) {
 
 
 PreviewWithBandizip() {
-	ShellRun('Bandizip', '/open -fg ' '"' GetExplorerPathX().path '"')
+	pathX := GetExplorerPathX()
+	if (pathX.isExists) {
+		ShellRun('Bandizip', '/open -fg ' '"' GetExplorerPathX().path '"')
+	}
+}
+
+
+; 映射快剪切板快捷键
+!c::{
+	Send('#v')
 }

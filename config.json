@@ -1314,6 +1314,12 @@
             "actionTypeID": 4,
             "comment": "label:31",
             "actionValueID": 7
+          },
+          {
+            "windowGroupID": 3,
+            "actionTypeID": 8,
+            "comment": "办公套件",
+            "ahkCode": "pcSuiteSend()"
           }
         ],
         "*b": [
@@ -1409,8 +1415,8 @@
           {
             "windowGroupID": 0,
             "actionTypeID": 8,
-            "comment": "用VSCode打开",
-            "ahkCode": "openWitchVSCode()"
+            "comment": "用 VS Code 打开",
+            "ahkCode": "openWithVSCode()"
           }
         ],
         "*n": [
@@ -1455,8 +1461,8 @@
           {
             "windowGroupID": 3,
             "actionTypeID": 8,
-            "comment": "办公套件",
-            "ahkCode": "pcSuiteSend()"
+            "comment": "用 sublime text 打开",
+            "ahkCode": "openWithSublimeText()"
           }
         ],
         "*space": [
@@ -1571,12 +1577,12 @@
             "keysToSend": "{(}  {)}{left 2}"
           }
         ],
-        "*LAlt": [
+        "*RButton": [
           {
             "windowGroupID": 0,
-            "actionTypeID": 7,
-            "comment": "label:57",
-            "actionValueID": 19
+            "actionTypeID": 6,
+            "comment": "切换中英标点",
+            "keysToSend": "{Ctrl DOWN}{.}{Ctrl UP}"
           }
         ],
         "*`": [
