@@ -185,11 +185,13 @@ toggle_touch_mouse() {
 }
 
 
+vscodePath := "C:\Users\nbc\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+
 ; VS Code 打开选中文件/文件夹, 其余情况恢复上一次工作区
 openWithVSCode() {
 	paths := GetSelectedPaths()
 	if (paths.Length = 0)
-		return ShellRun("code", "-r",,,1)
+		return RunPrograms(vscodePath, "-r")
 
 	; 未选中（只有一个目录）→ 打开目录；选中 → 打开所有选中项
 	args := ""
@@ -199,7 +201,7 @@ openWithVSCode() {
 		for p in paths
 			args .= ' "' p '"'
 
-	ShellRun("code", args,,,1)
+	RunPrograms(vscodePath,args)
 }
 
 sublimeTextPath := "E:\Sublime Text\sublime_text.exe"
